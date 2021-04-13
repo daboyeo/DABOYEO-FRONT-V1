@@ -1,5 +1,9 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 module.exports = {
   mode: "none",
@@ -26,10 +30,22 @@ module.exports = {
   output: {
     filename: "bundle.min.js",
     path: path.resolve(__dirname, "s3"),
+    publicPath: "/",
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "public", "index.html"),
     }),
+    new webpack.DefinePlugin({
+      "process.env.GOOGLE_OAUTH_CLIENT_ID": JSON.stringify(
+        process.env.GOOGLE_OAUTH_CLIENT_ID
+      ),
+      "process.env.GOOGLE_OAUTH_CLIENT_PW": JSON.stringify(
+        process.env.GOOGLE_OAUTH_CLIENT_PW
+      ),
+    }),
   ],
+  devServer: {
+    historyApiFallback: true,
+  },
 };
