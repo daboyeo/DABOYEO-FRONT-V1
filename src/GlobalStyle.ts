@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
     body {
@@ -17,7 +17,6 @@ export const GlobalStyle = createGlobalStyle`
       border:none;
       background-color:none;
       font-family:Noto Sans KR;
-
     }
 `;
 
@@ -31,4 +30,26 @@ export const GlobalCenterDiv = styled.div`
 `;
 export const GlobalLayoutDiv = styled(GlobalCenterDiv)`
   margin-top: 80px;
+`;
+
+export const SlideUp = (px: number) => keyframes`
+  0% {
+    opacity:0.1;
+    transform:translateY(${px}px);
+  }
+  100% {
+    opacity:1;
+    transform:translateY(0px);
+  }
+`;
+
+export const SlideDown = (px: number) => keyframes`
+  0% {
+    opacity:0.3;
+    transform:translateY(-${px}px);
+  }
+  100% {
+    opacity:1;
+    transform:translateY(0px);
+  }
 `;
