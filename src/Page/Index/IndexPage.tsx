@@ -1,17 +1,16 @@
 import React, { FC } from "react";
-import { WriteFeed } from "../../Component";
-import WriteModal from "../../Component/WriteModal/WriteModal";
+import WriteModalPage from "../WriteModal/WriteModalPage";
+import WritePageHeader from "./WritePageHeader/WritePageHeader";
 import DetailFeedPage from "./DetailFeed/DetailFeed";
 import FeedList from "./FeedList/FeedList";
 import OverView from "./OverView/OverView";
 import * as S from "./style";
-import WritePageHeader from "./WritePageHeader/WritePageHeader";
 
 const IndexPage: FC = ({}) => {
   return (
     <S.Container>
       <OverView />
-      <WriteModal />
+      <WriteModalPage />
       <WritePageHeader />
       <S.FeedWrap>
         <FeedList />
