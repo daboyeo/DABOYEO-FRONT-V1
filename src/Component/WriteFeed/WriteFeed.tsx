@@ -2,16 +2,16 @@ import React, { FC } from "react";
 import * as S from "./style";
 
 interface Props {
-  placeHolder: string;
+  btnText: string;
   imgSrc: string;
   onClick: () => void;
 }
 
-const WriteFeed: FC<Props> = ({ placeHolder, imgSrc }) => {
+const WriteFeed: FC<Props> = ({ onClick, btnText, imgSrc }) => {
   return (
     <S.Container>
       <S.UserImg src={imgSrc} />
-      <S.WriteInput disabled placeholder={placeHolder} />
+      <S.WriteInput onClick={onClick}>{btnText}</S.WriteInput>
     </S.Container>
   );
 };

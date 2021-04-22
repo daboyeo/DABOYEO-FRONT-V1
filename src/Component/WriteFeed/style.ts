@@ -19,16 +19,16 @@ export const UserImg = styled.img`
   border-radius: 50%;
 `;
 
-export const WriteInput = styled.input`
+export const WriteInput = styled.button`
   flex: 1;
   padding: 5px 0;
   padding-left: 10px;
   font-size: 17px;
+  text-align: left;
   margin-left: 20px;
   border: none;
   border-radius: 30px;
   background-color: #f0f2f5;
-  height: 30px;
   transition: 150ms all;
 
   &:hover {
