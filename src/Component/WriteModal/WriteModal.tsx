@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useCallback, MouseEvent } from "react";
 import * as S from "./styles";
 
 interface Props {
@@ -18,8 +18,15 @@ const WriteModal: FC<Props> = ({
   placeHolder,
   title,
 }) => {
+  const backgroundClickHandler = useCallback(
+    (e: MouseEvent<HTMLInputElement>) => {
+      if (e.currentTarget === e.target) onBackgroundClick();
+    },
+    [onBackgroundClick]
+  );
+
   return (
-    <S.Container>
+    <S.Container onClick={backgroundClickHandler}>
       <S.Modal>
         <S.ModalHeader>
           <S.Title>{title}</S.Title>

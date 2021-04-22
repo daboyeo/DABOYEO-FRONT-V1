@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { SlideUp } from "../../GlobalStyle";
 
 export const Container = styled.div`
   position: fixed;
@@ -24,6 +25,7 @@ export const Modal = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
+  animation: ${SlideUp(100)} 200ms;
 `;
 
 export const ModalHeader = styled.div`
