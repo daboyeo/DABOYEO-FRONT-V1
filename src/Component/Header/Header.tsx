@@ -1,12 +1,14 @@
 import React, { FC, useCallback, useState } from "react";
 import { Link } from "react-router-dom";
-import { cli } from "webpack";
+import { authConstant } from "../../lib/client";
 import { HomeIcon, PersonIcon, SearchIcon } from "../../Asset";
+import * as authApi from "../../lib/apis/auth";
 import * as S from "./style";
 
 const Header: FC = () => {
   const [isSearchMode, setIsSearchMode] = useState<boolean>(false);
   const [isLoginMode, setIsLoginMode] = useState<boolean>(false);
+
   const googleAuth = useCallback(() => {
     const client = (window as any).gapi;
     client.load("auth2", async function () {
@@ -15,14 +17,21 @@ const Header: FC = () => {
       });
       try {
         const res = await clientPromise.signIn();
+        const { access_token, id_token } = res.qc;
+
+        const res2 = await authApi.reqAuth(access_token);
+        const token: string = res2.data.access_token;
+
+        window.localStorage.setItem(authConstant.ACCESS_TOKEN, token);
+
+        setIsLoginMode(true);
       } catch (err) {
-
-
-
         console.log(err);
+        return;
       }
     });
   }, []);
+
   const changeIsSearchMode = useCallback(() => {
     setIsSearchMode((prev) => !prev);
   }, []);
