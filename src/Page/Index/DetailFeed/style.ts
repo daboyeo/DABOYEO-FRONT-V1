@@ -84,7 +84,7 @@ export const DetailFeedTime = styled.div`
   align-items: center;
 `;
 export const DetailFeedContent = styled.div`
-  height: 90px;
+  height: 100px;
   overflow-y: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -97,6 +97,7 @@ export const DetailFeedImg = styled.div`
 `;
 export const DetailFeedImgItem = styled.div`
   flex: 1 1 40%;
+  max-height: 180px;
 
   > img {
     width: 100%;
