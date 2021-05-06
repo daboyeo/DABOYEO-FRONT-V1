@@ -1,13 +1,47 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { authConstant } from "../../lib/client";
 import { HomeIcon, PersonIcon, SearchIcon } from "../../Asset";
 import * as authApi from "../../lib/apis/auth";
 import * as S from "./style";
+import * as profileApi from "../../lib/apis/profile";
+import { useDispatch } from "react-redux";
+import { setProfile } from "../../Module/Action/profile/profile";
+import { delay } from "../../lib/utils";
 
 const Header: FC = () => {
+  const dispatch = useDispatch();
   const [isSearchMode, setIsSearchMode] = useState<boolean>(false);
   const [isLoginMode, setIsLoginMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    const userName: string = localStorage.getItem(authConstant.USER_NAME);
+    const profileUri: string = localStorage.getItem(authConstant.PROFILE);
+    const accessToken: string = localStorage.getItem(authConstant.ACCESS_TOKEN);
+
+    setIsLoginMode(false);
+    dispatch(
+      setProfile({
+        name: userName,
+        profile_uri: profileUri,
+      })
+    );
+
+    if ((!userName || !profileUri) && accessToken) {
+      profileApi.reqGetMyInfo().then((res) => {
+        const { name, profile_uri } = res.data;
+        localStorage.setItem(authConstant.USER_NAME, name);
+        localStorage.setItem(authConstant.PROFILE, profile_uri);
+
+        setIsLoginMode(true);
+        dispatch(setProfile(res.data));
+      });
+    }
+
+    if (userName && profileUri && accessToken) {
+      setIsLoginMode(true);
+    }
+  }, []);
 
   const googleAuth = useCallback(() => {
     const client = (window as any).gapi;
@@ -17,14 +51,16 @@ const Header: FC = () => {
       });
       try {
         const res = await clientPromise.signIn();
-        const { access_token, id_token } = res.qc;
+        console.log(res);
+        const { access_token } = res.qc;
 
         const res2 = await authApi.reqAuth(access_token);
         const token: string = res2.data.access_token;
 
-        window.localStorage.setItem(authConstant.ACCESS_TOKEN, token);
-
-        setIsLoginMode(true);
+        localStorage.clear();
+        localStorage.setItem(authConstant.ACCESS_TOKEN, token);
+        await delay(500);
+        window.location.reload();
       } catch (err) {
         console.log(err);
         return;
@@ -32,9 +68,12 @@ const Header: FC = () => {
     });
   }, []);
 
+  const successLogin = useCallback(async (res: any) => {}, []);
+
   const changeIsSearchMode = useCallback(() => {
     setIsSearchMode((prev) => !prev);
   }, []);
+
   return (
     <S.Container>
       <S.Header>
