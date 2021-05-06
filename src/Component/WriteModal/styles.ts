@@ -15,9 +15,9 @@ export const Container = styled.div`
 `;
 
 export const Modal = styled.div`
-  width: 490px;
+  width: 530px;
   margin-bottom: 100px;
-  height: 410px;
+  height: 800px;
   border-radius: 6px;
   box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 14%);
   background-color: white;
@@ -28,6 +28,11 @@ export const Modal = styled.div`
   animation: ${SlideUp(100)} 200ms;
 `;
 
+export const KakaoMap = styled.div`
+  width: 100%;
+  height: 400px;
+`;
+
 export const ModalHeader = styled.div`
   border-bottom: 1px solid rgb(229, 229, 229);
 `;
@@ -35,6 +40,7 @@ export const ModalContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding-bottom: 10px;
 `;
 export const ModalFooter = styled.div``;
 export const Title = styled.div`
@@ -59,6 +65,13 @@ export const Name = styled.div`
   margin-left: 10px;
   font-size: 15px;
   font-weight: bold;
+  flex: 1;
+`;
+
+export const UploadBtn = styled.img`
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
 `;
 
 export const SubmitButton = styled.button`
@@ -87,5 +100,23 @@ export const Textarea = styled.textarea`
   &::placeholder {
     font-family: Noto Sans KR;
     font-size: 23px;
+  }
+`;
+
+export const LocationInput = styled.input`
+  width: 100%;
+`;
+
+export const TagWrite = styled.div``;
+export const TagList = styled.div`
+  height: 30px;
+`;
+export const Tag = styled.span`
+  color: #6979b5;
+`;
+export const TagInput = styled.input`
+  &::placeholder {
+    color: #6979b5;
+    flex: 1;
   }
 `;
