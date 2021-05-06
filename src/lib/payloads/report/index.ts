@@ -3,11 +3,30 @@ export interface ReportListItem {
   reporter_name: string;
   reporter_profile_uri: string;
   content: string;
-  tags: [];
-  image_uris: [];
+  tags: string[];
+  image_uris: string[];
   num_of_sympathy: number;
   is_sympathy: boolean;
   created_at: string;
   updated_at: string;
   location: string;
+}
+
+export interface ReportManagement {
+  tags: string[];
+  files: File[];
+  content: string;
+  location: string;
+}
+
+export interface ReportReq {
+  tags: string[];
+  image_uris: string[];
+  content: string;
+  location: string;
+}
+
+export interface Location {
+  latitude: number;
+  longitude: number;
 }
