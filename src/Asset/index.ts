@@ -3,3 +3,4 @@ export { default as PersonIcon } from "./PersonIcon.svg";
 export { default as SearchIcon } from "./SearchIcon.svg";
 export { default as CheckIcon } from "./CheckIcon.svg";
 export { default as RejectIcon } from "./RejectIcon.svg";
+export { default as UploadIcon } from "./UploadIcon.svg";
