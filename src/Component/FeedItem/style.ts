@@ -65,6 +65,11 @@ export const WriterImg = styled.img`
 `;
 export const WriterName = styled.span`
   margin-left: 10px;
+  flex: 1;
+`;
+
+export const Date = styled.div`
+  text-align: right;
 `;
 
 export const FeedImgs = styled.div`
@@ -81,4 +86,13 @@ export const FeedImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+export const TagWrap = styled.div``;
+export const Tag = styled.span`
+  color: #6979b5;
+  cursor: pointer;
+`;
+export const Location = styled(Tag)`
+  margin-right: 10px;
 `;

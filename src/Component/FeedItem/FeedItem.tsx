@@ -5,48 +5,45 @@ import * as S from "./style";
 export type ClickHandler = (id: number) => void;
 
 interface Props {
+  date: string;
+  id: number;
   imgSrc: string[];
   userName: string;
   isAdminMode?: boolean;
+  content: string;
+  profileImgSrc: string;
+  tags: string[];
+  location: string;
   clickHandler?: ClickHandler;
   imgClickHandler?: (e: MouseEvent<HTMLImageElement>) => void;
   onSuccessHandler?: ClickHandler;
   onFailHandler?: ClickHandler;
 }
 
-const content = `안녕하세요! 
-대전에 거주하는 공영길입니다. 
-오늘 끔찍한 사건을 목격했어요!
-조심하세용
-`;
-
 const FeedItem: FC<Props> = ({
+  id,
   imgSrc,
   userName,
   isAdminMode,
+  profileImgSrc,
+  content,
+  date,
+  tags,
+  location,
   clickHandler,
   imgClickHandler,
   onSuccessHandler,
   onFailHandler,
 }) => {
-  const containerClickHandler = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      if (e.target === e.currentTarget) {
-        clickHandler(1);
-      }
-    },
-    [clickHandler]
-  );
-
   const onSuccess = useCallback(() => {
-    onSuccessHandler(1);
-  }, [onSuccessHandler]);
+    onSuccessHandler(id);
+  }, []);
   const onFail = useCallback(() => {
-    onFailHandler(1);
-  }, [onFailHandler]);
+    onFailHandler(id);
+  }, []);
 
   return (
-    <S.Container onClick={containerClickHandler}>
+    <S.Container onClick={() => clickHandler(id)}>
       {isAdminMode && (
         <S.AdminButtonWrap>
           <S.AdminButtonBackground color="#07bc0c">
@@ -59,15 +56,22 @@ const FeedItem: FC<Props> = ({
       )}
       <S.FeedContentWrap>
         <S.FeedHeader>
-          <S.WriterImg src="https://image.flaticon.com/icons/png/512/634/634741.png" />
+          <S.WriterImg src={profileImgSrc} />
           <S.WriterName>{userName}</S.WriterName>
+          <S.Date>{date}</S.Date>
         </S.FeedHeader>
         <S.FeedContent>{content}</S.FeedContent>
+        <S.TagWrap>
+          <S.Location>#{location}</S.Location>
+          {tags.map((tag: string) => (
+            <S.Tag>#{tag}</S.Tag>
+          ))}
+        </S.TagWrap>
       </S.FeedContentWrap>
       <S.FeedImgs>
-        {imgSrc.map((src: string, index: number) => (
-          <S.FeedImgWrap key={index}>
-            <S.FeedImg key={index} src={src} onContextMenu={imgClickHandler} />
+        {imgSrc.map((src: string, i: number) => (
+          <S.FeedImgWrap key={i}>
+            <S.FeedImg key={i} src={src} onContextMenu={imgClickHandler} />
           </S.FeedImgWrap>
         ))}
       </S.FeedImgs>
