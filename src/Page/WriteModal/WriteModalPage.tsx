@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { WriteModal } from "../../Component";
 import * as reportApi from "../../lib/apis/report";
 import { ReportManagement, ReportReq } from "../../lib/payloads/report";
+import { getImgSrc } from "../../lib/utils";
 import { setWriteModalOpen } from "../../Module/Action/writeModal";
 import { Store } from "../../Module/Reducer";
 
@@ -39,7 +40,7 @@ const WriteModalPage: FC = () => {
   return (
     open && (
       <WriteModal
-        imgSrc={profileUri}
+        imgSrc={getImgSrc(profileUri)}
         name={name}
         onBackgroundClick={closeModal}
         onSubmit={submit}
