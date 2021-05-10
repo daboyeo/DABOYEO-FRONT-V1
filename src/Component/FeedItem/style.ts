@@ -96,3 +96,8 @@ export const Tag = styled.span`
 export const Location = styled(Tag)`
   margin-right: 10px;
 `;
+
+export const KakaoMap = styled.div`
+  width: 100%;
+  height: 300px;
+`;

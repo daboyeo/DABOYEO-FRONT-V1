@@ -1,5 +1,6 @@
-import React, { FC, useCallback, MouseEvent } from "react";
+import React, { FC, useCallback, MouseEvent, useRef, useEffect } from "react";
 import { CheckIcon, RejectIcon } from "../../Asset";
+import KakaoMap from "../../lib/kakaoMap";
 import * as S from "./style";
 
 export type ClickHandler = (id: number) => void;
@@ -35,6 +36,17 @@ const FeedItem: FC<Props> = ({
   onSuccessHandler,
   onFailHandler,
 }) => {
+  const kakaoMapRef = useRef<any>();
+
+  useEffect(() => {
+    kakaoMapRef.current = new KakaoMap(
+      document.getElementById(`kakao-map-${id}`)
+    );
+    const [lat, lot] = location.split(" ");
+    kakaoMapRef.current.center(Number(lat), Number(lot));
+    kakaoMapRef.current.draw({ x: lot, y: lat });
+  }, []);
+
   const onSuccess = useCallback(() => {
     onSuccessHandler(id);
   }, []);
@@ -62,19 +74,12 @@ const FeedItem: FC<Props> = ({
         </S.FeedHeader>
         <S.FeedContent>{content}</S.FeedContent>
         <S.TagWrap>
-          <S.Location>#{location}</S.Location>
           {tags.map((tag: string) => (
             <S.Tag>#{tag}</S.Tag>
           ))}
         </S.TagWrap>
       </S.FeedContentWrap>
-      <S.FeedImgs>
-        {imgSrc.map((src: string, i: number) => (
-          <S.FeedImgWrap key={i}>
-            <S.FeedImg key={i} src={src} onContextMenu={imgClickHandler} />
-          </S.FeedImgWrap>
-        ))}
-      </S.FeedImgs>
+      <S.KakaoMap id={`kakao-map-${id}`} />
     </S.Container>
   );
 };
