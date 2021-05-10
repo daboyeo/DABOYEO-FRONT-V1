@@ -1,27 +1,36 @@
-import DetailFeedAction, { SET_DETAIL_FEED_ID } from "../../Action/detailFeed";
+import DetailFeedAction, {
+  GET_DETAIL_FEED_SUCCESS,
+} from "../../Action/detailFeed";
+import { ReportDetail } from "../../../lib/payloads/report";
 
-export interface DetailFeedReducerState {
-  id: number;
-}
+export interface DetailFeedState extends ReportDetail {}
 
-const initialState: DetailFeedReducerState = {
-  id: 0,
+const initialState: ReportDetail = {
+  comments: [],
+  content: "",
+  created_at: "",
+  image_uris: [],
+  is_sympathy: false,
+  location: "",
+  num_of_sympathy: 0,
+  report_id: 0,
+  reporter_name: "",
+  reporter_profile_uri: "",
+  tags: [],
+  updated_at: "",
 };
 
 const detailFeedReducer = (
-  state: DetailFeedReducerState = initialState,
+  state: DetailFeedState = initialState,
   action: DetailFeedAction
-) => {
+): DetailFeedState => {
   switch (action.type) {
-    case SET_DETAIL_FEED_ID: {
-      return {
-        ...state,
-        id: action.payload.id,
-      };
+    case GET_DETAIL_FEED_SUCCESS: {
+      return action.payload;
     }
     default: {
       return state;
-    }
+    } q
   }
 };
 

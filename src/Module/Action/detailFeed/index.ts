@@ -1,10 +1,18 @@
-export const SET_DETAIL_FEED_ID = "detailFeed/SET_DETAIL_FEED_ID" as const;
+import { ReportDetail } from "../../../lib/payloads/report";
 
-export const setDetailFeedId = (id: number) => ({
-  type: SET_DETAIL_FEED_ID,
+export const GET_DETAIL_FEED = "detailFeed/GET_DETAIL_FEED" as const;
+export const GET_DETAIL_FEED_SUCCESS = "detailFeed/GET_DETAIL_FEED_SUCCESS" as const;
+
+export const getDetailFeed = (id: number) => ({
+  type: GET_DETAIL_FEED,
   payload: { id },
 });
 
-type DetailFeedAction = ReturnType<typeof setDetailFeedId>;
+export const getDetailFeedSuccess = (payload: ReportDetail) => ({
+  type: GET_DETAIL_FEED_SUCCESS,
+  payload,
+});
+
+type DetailFeedAction = ReturnType<typeof getDetailFeedSuccess>;
 
 export default DetailFeedAction;
