@@ -68,6 +68,10 @@ export const Name = styled.div`
   flex: 1;
 `;
 
+export const HiddenInput = styled.input`
+  display: none;
+`;
+
 export const UploadBtn = styled.img`
   width: 30px;
   height: 30px;

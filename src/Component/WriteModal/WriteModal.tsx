@@ -5,12 +5,17 @@ import React, {
   useState,
   useRef,
   useEffect,
+  ChangeEvent,
 } from "react";
 import { UploadIcon } from "../../Asset";
 import useEnter from "../../lib/hooks/useEnter";
 import useInput from "../../lib/hooks/useInput";
 import KakaoMap from "../../lib/kakaoMap";
-import { Location, ReportManagement } from "../../lib/payloads/report";
+import {
+  KakaoMapLocation,
+  Location,
+  ReportManagement,
+} from "../../lib/payloads/report";
 import * as S from "./styles";
 
 interface Props {
@@ -31,6 +36,7 @@ const WriteModal: FC<Props> = ({
   title,
 }) => {
   const kakaoRef = useRef<any>();
+  const inputRef = useRef<HTMLInputElement>();
   const [location, setLocation, changeLocation] = useInput<HTMLInputElement>(
     ""
   );
@@ -38,15 +44,22 @@ const WriteModal: FC<Props> = ({
   const [content, setContent, changeContent] = useInput<HTMLTextAreaElement>(
     ""
   );
-  const [files, setFiles] = useState<FileList>();
+  const [files, setFiles] = useState<File[]>();
   const [tag, setTag, changeTag] = useInput<HTMLInputElement>("");
   const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     kakaoRef.current = new KakaoMap(document.getElementById("map"));
-    kakaoRef.current.addEventListener("onMarkerClick", (location: Location) => {
-      setLocationData(location);
-    });
+    kakaoRef.current.addEventListener(
+      "onMarkerClick",
+      (location: KakaoMapLocation) => {
+        setLocation(`${location.address} ${location.place}`);
+        setLocationData({
+          latitude: location.latitude,
+          longitude: location.longitude,
+        });
+      }
+    );
   }, []);
 
   const backgroundClickHandler = useCallback(
@@ -55,6 +68,19 @@ const WriteModal: FC<Props> = ({
     },
     [onBackgroundClick]
   );
+
+  const openInputFile = useCallback(() => {
+    inputRef.current.click();
+  }, []);
+
+  const fileChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const files: File[] = [];
+    const fileList: FileList = e.target.files;
+    for (let i: number = 0; i < e.target.files.length; i++) {
+      files.push(fileList.item(i));
+    }
+    setFiles(files);
+  }, []);
 
   const submitLocation = useCallback(() => {
     if (!kakaoRef.current) return;
@@ -68,14 +94,17 @@ const WriteModal: FC<Props> = ({
   }, [tag]);
 
   const submitReport = useCallback(() => {
+    const lat: string = `${locationData.latitude}`;
+    const lot: string = `${locationData.longitude}`;
+    const location: string = `${lat} ${lot}`;
     const reportsData: ReportManagement = {
       content,
       location,
       tags,
-      files: [],
+      files,
     };
     onSubmit(reportsData);
-  }, [content, location, tags]);
+  }, [content, locationData, tags, files]);
 
   const tagEnter = useEnter(submitTag);
   const locationEnter = useEnter(submitLocation);
@@ -90,7 +119,13 @@ const WriteModal: FC<Props> = ({
           <S.MyProfile>
             <S.ProfileImg src={imgSrc} />
             <S.Name>{name}</S.Name>
-            <S.UploadBtn src={UploadIcon} />
+            <S.UploadBtn onClick={openInputFile} src={UploadIcon} />
+            <S.HiddenInput
+              type="file"
+              ref={inputRef}
+              onChange={fileChangeHandler}
+              multiple
+            />
           </S.MyProfile>
           <S.Textarea
             onChange={changeContent}
