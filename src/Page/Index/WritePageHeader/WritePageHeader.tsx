@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { WriteFeed } from "../../../Component";
+import { getImgSrc } from "../../../lib/utils";
 import { setWriteModalOpen } from "../../../Module/Action/writeModal";
 import { Store } from "../../../Module/Reducer";
 
@@ -14,7 +15,7 @@ const WritePageHeader: FC = () => {
   return (
     <WriteFeed
       onClick={clickHandler}
-      imgSrc={profileUri}
+      imgSrc={getImgSrc(profileUri)}
       btnText={`${name}님, 어떤 사건 사고를 목격하셨나요?`}
     />
   );
