@@ -5,41 +5,71 @@ import React, {
   useCallback,
   useState,
   useRef,
+  useEffect,
 } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import useBoolean from "../../lib/hooks/useBoolean";
+import { Store } from "../../Module/Reducer";
 import FeedList from "../Index/FeedList/FeedList";
+import * as profileApi from "../../lib/apis/profile";
+import * as reportApi from "../../lib/apis/report";
 import * as S from "./style";
+import { UserProfileRes } from "../../lib/payloads/profile";
+import { getImgSrc, removeProfle } from "../../lib/utils";
 
 const ProfilePage: FC = () => {
-  const [isNameEditMode, setIsNameEditMode] = useState<boolean>(false);
-  const [editName, setEditName] = useState<string>("공영길");
+  const { name, profileUri } = useSelector((store: Store) => store.profile);
+  const [isNameEditMode, setIsNameEditMode, toggleIsNameEditMode] = useBoolean(
+    false
+  );
+  const [editName, setEditName] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>();
-  const [fileUrl, setFileUrl] = useState<string>("");
+
+  useEffect(() => {
+    if (!name) return;
+    setEditName(name);
+  }, [name]);
 
   const editNameHandelr = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setEditName(e.target.value);
-  }, []);
-
-  const toggleIsNameEditMode = useCallback(() => {
-    setIsNameEditMode((prev) => !prev);
   }, []);
 
   const imgClickHandler = useCallback(() => {
     fileInputRef.current.click();
   }, []);
 
-  const fileChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const file: File = e.target.files[0];
+  const fileChangeHandler = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      const file: File = e.target.files[0];
 
-    const imgUrl: string = URL.createObjectURL(file);
-    setFileUrl(imgUrl);
-  }, []);
+      try {
+        const fileUuid = (await reportApi.reqUploadImage(file)).data.file_uuid;
+        const newUserInfo: UserProfileRes = {
+          name: name,
+          profile_uri: fileUuid,
+        };
+        await profileApi.editProfile(newUserInfo);
+        removeProfle();
+        window.location.reload();
+      } catch (err) {}
+    },
+    [name]
+  );
 
   const submitHandler = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setIsNameEditMode(false);
+      try {
+        const newUserInfo: UserProfileRes = {
+          name: editName,
+          profile_uri: profileUri,
+        };
+        await profileApi.editProfile(newUserInfo);
+        removeProfle();
+        window.location.reload();
+      } catch (err) {}
     },
-    [editName]
+    [editName, profileUri]
   );
 
   return (
@@ -51,13 +81,9 @@ const ProfilePage: FC = () => {
           type="file"
           onChange={fileChangeHandler}
         />
-        <S.ProfileImg
-          onClick={imgClickHandler}
-          src={
-            fileUrl ||
-            "https://scontent-ssn1-1.xx.fbcdn.net/v/t1.30497-1/c59.0.200.200a/p200x200/84241059_189132118950875_4138507100605120512_n.jpg?_nc_cat=1&ccb=1-3&_nc_sid=7206a8&_nc_ohc=Cv5TMyIYyLAAX_IDRxl&_nc_ht=scontent-ssn1-1.xx&tp=27&oh=280c3c5164afbc84c114625873dafa8a&oe=6080FE04"
-          }
-        />
+        {profileUri && (
+          <S.ProfileImg onClick={imgClickHandler} src={getImgSrc(profileUri)} />
+        )}
         <S.NameEditWrap onSubmit={submitHandler}>
           {isNameEditMode ? (
             <S.NameEditInput
@@ -66,7 +92,7 @@ const ProfilePage: FC = () => {
               type="text"
             />
           ) : (
-            <S.UserName onClick={toggleIsNameEditMode}>공영길</S.UserName>
+            <S.UserName onClick={toggleIsNameEditMode}>{name}</S.UserName>
           )}
         </S.NameEditWrap>
       </S.ProfileImgWrap>
