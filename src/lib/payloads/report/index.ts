@@ -12,6 +12,14 @@ export interface ReportListItem {
   location: string;
 }
 
+export interface Comment {
+  comment_id: number;
+  profile_uri: string;
+  name: string;
+  content: string;
+  user_id: number;
+}
+
 export interface ReportManagement {
   tags: string[];
   files: File[];
@@ -29,4 +37,13 @@ export interface ReportReq {
 export interface Location {
   latitude: number;
   longitude: number;
+}
+
+export interface KakaoMapLocation extends Location {
+  address: string;
+  place: string;
+}
+
+export interface ReportDetail extends ReportListItem {
+  comments: Comment[];
 }
