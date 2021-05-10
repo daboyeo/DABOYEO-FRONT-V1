@@ -1,17 +1,29 @@
 import React, { FC } from "react";
 import * as S from "./style";
 
+type WriteFeedType = "button" | "input";
+
 interface Props {
   btnText: string;
   imgSrc: string;
-  onClick: () => void;
+  onClick?: () => void;
+  mode?: WriteFeedType;
 }
 
-const WriteFeed: FC<Props> = ({ onClick, btnText, imgSrc }) => {
+const WriteFeed: FC<Props> = ({
+  onClick,
+  btnText,
+  imgSrc,
+  mode = "button",
+}) => {
   return (
     <S.Container>
       <S.UserImg src={imgSrc} />
-      <S.WriteInput onClick={onClick}>{btnText}</S.WriteInput>
+      {mode === "button" ? (
+        <S.WriteInputButton onClick={onClick}>{btnText}</S.WriteInputButton>
+      ) : (
+        <S.WriteInput placeholder={btnText} />
+      )}
     </S.Container>
   );
 };
