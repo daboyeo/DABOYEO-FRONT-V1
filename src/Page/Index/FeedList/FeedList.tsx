@@ -6,7 +6,7 @@ import { setDetailFeedId } from "../../../Module/Action/detailFeed";
 import { setOverImgView } from "../../../Module/Action/overViewImg";
 import { getAllReports } from "../../../Module/Action/report";
 import { Store } from "../../../Module/Reducer";
-import { delay } from "../../../lib/utils";
+import { delay, getImgSrc } from "../../../lib/utils";
 const FeedList: FC = () => {
   const dispatch = useDispatch();
   const reports: ReportListItem[] = useSelector(
@@ -48,13 +48,13 @@ const FeedList: FC = () => {
             key={report_id}
             date={created_at}
             id={report_id}
-            profileImgSrc={reporter_profile_uri}
+            profileImgSrc={getImgSrc(reporter_profile_uri)}
             isAdminMode={false}
             userName={reporter_name}
             content={content}
             clickHandler={containerHandler}
             imgClickHandler={clickHandler}
-            imgSrc={image_uris}
+            imgSrc={image_uris.map((uri: string) => getImgSrc(uri))}
           />
         )
       )}
