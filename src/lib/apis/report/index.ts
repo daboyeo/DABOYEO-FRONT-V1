@@ -16,5 +16,8 @@ export const reqUploadImage = (
   const formData: FormData = new FormData();
   formData.append("file", file);
 
-  return axios.post<{ file_uuid: string }>("http://54.180.105.66:8000", file);
+  return axios.post<{ file_uuid: string }>(
+    "http://54.180.105.66:8000/file",
+    formData
+  );
 };
