@@ -74,8 +74,8 @@ const FeedItem: FC<Props> = ({
         </S.FeedHeader>
         <S.FeedContent>{content}</S.FeedContent>
         <S.TagWrap>
-          {tags.map((tag: string) => (
-            <S.Tag>#{tag}</S.Tag>
+          {tags.map((tag: string, i: number) => (
+            <S.Tag key={i}>#{tag}</S.Tag>
           ))}
         </S.TagWrap>
       </S.FeedContentWrap>
