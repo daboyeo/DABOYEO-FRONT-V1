@@ -33,7 +33,8 @@ const WriteModalPage: FC = () => {
         location: data.location,
         tags: data.tags,
       });
-      alert("글 작성 성공!");
+      alert("신고를 완료했습니다");
+      dispatch(setWriteModalOpen(false));
     } catch (err) {}
   }, []);
 
