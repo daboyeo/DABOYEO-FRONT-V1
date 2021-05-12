@@ -1,3 +1,4 @@
+import { GET_DETAIL_FEED } from "../../Action/detailFeed";
 import LoadingAction, {
   FINISH_LOADING,
   LoadingType,
@@ -7,10 +8,12 @@ import { GET_ALL_REPORTS } from "../../Action/report";
 
 interface LoadingReducerState {
   [GET_ALL_REPORTS]: boolean;
+  [GET_DETAIL_FEED]: boolean;
 }
 
 const initialState: LoadingReducerState = {
   [GET_ALL_REPORTS]: false,
+  [GET_DETAIL_FEED]: false,
 };
 
 const loadingReducer = (

@@ -1,9 +1,10 @@
+import { GET_DETAIL_FEED } from "../detailFeed";
 import { GET_ALL_REPORTS } from "../report";
 
 export const START_LOADING = "loading/START_LOADING" as const;
 export const FINISH_LOADING = "loading/FINISH_LOADING" as const;
 
-export type LoadingType = typeof GET_ALL_REPORTS;
+export type LoadingType = typeof GET_ALL_REPORTS | typeof GET_DETAIL_FEED;
 
 export const startLoading = (loading: LoadingType) => ({
   type: START_LOADING,
