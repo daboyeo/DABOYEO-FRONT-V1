@@ -2,11 +2,11 @@ import React, { FC, MouseEvent, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FeedItem } from "../../../Component";
 import { ReportListItem } from "../../../lib/payloads/report";
-import { setDetailFeedId } from "../../../Module/Action/detailFeed";
 import { setOverImgView } from "../../../Module/Action/overViewImg";
 import { getAllReports } from "../../../Module/Action/report";
 import { Store } from "../../../Module/Reducer";
-import { delay, getImgSrc } from "../../../lib/utils";
+import { getImgSrc } from "../../../lib/utils";
+import { getDetailFeed } from "../../../Module/Action/detailFeed";
 const FeedList: FC = () => {
   const dispatch = useDispatch();
   const reports: ReportListItem[] = useSelector(
@@ -24,9 +24,7 @@ const FeedList: FC = () => {
   }, []);
 
   const containerHandler = useCallback(async (id: number) => {
-    dispatch(setDetailFeedId(0));
-    await delay(100);
-    dispatch(setDetailFeedId(id));
+    dispatch(getDetailFeed(id));
   }, []);
 
   return (
