@@ -1,26 +1,25 @@
 import React, { FC } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import { DetailFeed } from "../../../Component";
-import { ReportListItem } from "../../../lib/payloads/report";
 import { getAfterTime, getImgSrc } from "../../../lib/utils";
 import { Store } from "../../../Module/Reducer";
 import * as S from "./style";
 
 const DetailFeedPage: FC = () => {
-  const { id, feeds, profile } = useSelector(
+  const { profile, feedData, loading } = useSelector(
     (store: Store) => ({
-      id: store.detailFeed.id,
-      feeds: store.report.reports,
       profile: store.profile.profileUri,
+      feedData: store.detailFeed,
+      loading: store.loading["detailFeed/GET_DETAIL_FEED"],
     }),
     shallowEqual
   );
 
-  const feedData = feeds.find((data: ReportListItem) => data.report_id === id);
-
-  return feedData ? (
+  return feedData && !loading ? (
     <S.Container>
       <DetailFeed
+        id={feedData.report_id}
+        comments={feedData.comments}
         tags={feedData.tags}
         content={feedData.content}
         imgs={feedData.image_uris.map((uri: string) => getImgSrc(uri))}
