@@ -1,5 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { WriteFeed } from "..";
+import { Comment } from "../../lib/payloads/report";
+import CommentItem from "../CommentItem/CommentItem";
 import * as S from "./style";
 
 interface Props {
@@ -10,9 +12,12 @@ interface Props {
   content: string;
   imgs: string[];
   tags: string[];
+  comments: Comment[];
+  id: number;
 }
 
 const DetailFeed: FC<Props> = ({
+  id,
   location,
   profileImgSrc,
   reporterName,
@@ -20,7 +25,10 @@ const DetailFeed: FC<Props> = ({
   time,
   imgs,
   tags,
+  comments,
 }) => {
+  const commentSubmit = useCallback((content: string) => {}, [id]);
+
   return (
     <S.Container>
       <S.ContentWrap>
@@ -35,8 +43,8 @@ const DetailFeed: FC<Props> = ({
         </S.DetailFeedHeader>
         <S.DetailFeedContent>{content}</S.DetailFeedContent>
         <S.Tags>
-          {tags.map((tag: string) => (
-            <S.Tag>#{tag}</S.Tag>
+          {tags.map((tag: string, i: number) => (
+            <S.Tag key={i}>#{tag}</S.Tag>
           ))}
         </S.Tags>
         <S.DetailFeedImg>
@@ -48,9 +56,19 @@ const DetailFeed: FC<Props> = ({
         </S.DetailFeedImg>
       </S.ContentWrap>
       <S.CommentWrap>
-        <S.Comments></S.Comments>
+        <S.Comments>
+          {comments.map(({ comment_id, content, name, profile_uri }) => (
+            <CommentItem
+              key={comment_id}
+              content={content}
+              name={name}
+              profile={profile_uri}
+            />
+          ))}
+        </S.Comments>
         <S.WriteComment>
           <WriteFeed
+            onSubmit={commentSubmit}
             imgSrc={profileImgSrc}
             btnText="댓글을 입력하세요..."
             mode="input"
