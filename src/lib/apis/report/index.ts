@@ -1,6 +1,6 @@
 import axios from "axios";
 import apiDefault, { ResServer } from "../../client";
-import { ReportListItem, ReportReq } from "../../payloads/report";
+import { ReportDetail, ReportListItem, ReportReq } from "../../payloads/report";
 
 export const reqGetRepots = (): ResServer<{ reports: ReportListItem[] }> => {
   return apiDefault().get<{ reports: ReportListItem[] }>(`/report`);
@@ -20,4 +20,8 @@ export const reqUploadImage = (
     "http://54.180.105.66:8000/file",
     formData
   );
+};
+
+export const reqGetDetailFeed = (id: number): ResServer<ReportDetail> => {
+  return apiDefault().get<ReportDetail>(`/report/${id}`);
 };
