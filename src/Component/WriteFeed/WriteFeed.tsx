@@ -7,6 +7,7 @@ interface Props {
   btnText: string;
   imgSrc: string;
   onClick?: () => void;
+  onSubmit?: (content: string) => void;
   mode?: WriteFeedType;
 }
 
