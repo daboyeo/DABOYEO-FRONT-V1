@@ -37,14 +37,12 @@ const WriteModal: FC<Props> = ({
 }) => {
   const kakaoRef = useRef<any>();
   const inputRef = useRef<HTMLInputElement>();
-  const [location, setLocation, changeLocation] = useInput<HTMLInputElement>(
-    ""
-  );
+  const [location, setLocation, changeLocation] =
+    useInput<HTMLInputElement>("");
   const [locationData, setLocationData] = useState<Location | null>(null);
-  const [content, setContent, changeContent] = useInput<HTMLTextAreaElement>(
-    ""
-  );
-  const [files, setFiles] = useState<File[]>();
+  const [content, setContent, changeContent] =
+    useInput<HTMLTextAreaElement>("");
+  const [files, setFiles] = useState<File[]>([]);
   const [tag, setTag, changeTag] = useInput<HTMLInputElement>("");
   const [tags, setTags] = useState<string[]>([]);
 
