@@ -1,13 +1,19 @@
 import React, { FC } from "react";
 import * as S from "./style";
 
-const CommentItem: FC = () => {
+interface Props {
+  profile: string;
+  name: string;
+  content: string;
+}
+
+const CommentItem: FC<Props> = ({ content, name, profile }) => {
   return (
     <S.Container>
-      <S.CommenterImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqFZ0FGTrytcVajqgDEGFJX8J8kO-1WVG_wQ&usqp=CAU" />
+      <S.CommenterImg src={profile} />
       <S.CommentWrap>
-        <S.CommenterName>공영길N</S.CommenterName>
-        <S.CommentContent>댓글</S.CommentContent>
+        <S.CommenterName>{name}</S.CommenterName>
+        <S.CommentContent>{content}</S.CommentContent>
       </S.CommentWrap>
     </S.Container>
   );
