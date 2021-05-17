@@ -1,23 +1,38 @@
-import React, { FC } from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import React, { FC, useCallback } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { DetailFeed } from "../../../Component";
+import { reqPostComment } from "../../../lib/apis/report";
+import { CommentReq } from "../../../lib/payloads/report";
 import { getAfterTime, getImgSrc } from "../../../lib/utils";
+import { getDetailFeed } from "../../../Module/Action/detailFeed";
 import { Store } from "../../../Module/Reducer";
 import * as S from "./style";
 
 const DetailFeedPage: FC = () => {
-  const { profile, feedData, loading } = useSelector(
+  const dispatch = useDispatch();
+  const { feedData, loading } = useSelector(
     (store: Store) => ({
-      profile: store.profile.profileUri,
       feedData: store.detailFeed,
       loading: store.loading["detailFeed/GET_DETAIL_FEED"],
     }),
     shallowEqual
   );
 
-  return feedData && !loading ? (
+  const commentSubmit = useCallback(async ({ id, content }: CommentReq) => {
+    try {
+      await reqPostComment({
+        id,
+        content,
+      });
+      dispatch(getDetailFeed(id));
+      alert("댓글을 작성했습니다");
+    } catch (err) {}
+  }, []);
+
+  return feedData.report_id && !loading ? (
     <S.Container>
       <DetailFeed
+        onCommentSubmit={commentSubmit}
         id={feedData.report_id}
         comments={feedData.comments}
         tags={feedData.tags}
