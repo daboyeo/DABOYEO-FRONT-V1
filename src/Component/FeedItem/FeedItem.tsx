@@ -1,4 +1,11 @@
-import React, { FC, useCallback, MouseEvent, useRef, useEffect } from "react";
+import React, {
+  FC,
+  useCallback,
+  MouseEvent,
+  useRef,
+  useEffect,
+  memo,
+} from "react";
 import { CheckIcon, RejectIcon } from "../../Asset";
 import KakaoMap from "../../lib/kakaoMap";
 import * as S from "./style";
@@ -84,4 +91,4 @@ const FeedItem: FC<Props> = ({
   );
 };
 
-export default FeedItem;
+export default memo(FeedItem);
