@@ -1,4 +1,6 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
+import useEnter from "../../lib/hooks/useEnter";
+import useInput from "../../lib/hooks/useInput";
 import * as S from "./style";
 
 type WriteFeedType = "button" | "input";
@@ -16,14 +18,27 @@ const WriteFeed: FC<Props> = ({
   btnText,
   imgSrc,
   mode = "button",
+  onSubmit,
 }) => {
+  const [comment, setComment, changeComment] = useInput<HTMLInputElement>("");
+  const commentSubmit = useCallback(() => {
+    setComment("");
+    onSubmit(comment);
+  }, [comment, onSubmit]);
+
+  const commentEnter = useEnter(commentSubmit);
   return (
     <S.Container>
       <S.UserImg src={imgSrc} />
       {mode === "button" ? (
         <S.WriteInputButton onClick={onClick}>{btnText}</S.WriteInputButton>
       ) : (
-        <S.WriteInput placeholder={btnText} />
+        <S.WriteInput
+          onKeyDown={commentEnter}
+          value={comment}
+          onChange={changeComment}
+          placeholder={btnText}
+        />
       )}
     </S.Container>
   );
