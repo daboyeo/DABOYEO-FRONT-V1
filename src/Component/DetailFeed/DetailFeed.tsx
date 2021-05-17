@@ -1,7 +1,8 @@
 import React, { FC, useCallback } from "react";
-import { WriteFeed } from "..";
-import { Comment } from "../../lib/payloads/report";
-import CommentItem from "../CommentItem/CommentItem";
+import { CommentItem, WriteFeed } from "..";
+import { reqPostComment } from "../../lib/apis/report";
+import { Comment, CommentReq } from "../../lib/payloads/report";
+import { getImgSrc } from "../../lib/utils";
 import * as S from "./style";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
   imgs: string[];
   tags: string[];
   comments: Comment[];
+  onCommentSubmit: (data: CommentReq) => void;
   id: number;
 }
 
@@ -26,8 +28,14 @@ const DetailFeed: FC<Props> = ({
   imgs,
   tags,
   comments,
+  onCommentSubmit,
 }) => {
-  const commentSubmit = useCallback((content: string) => {}, [id]);
+  const commentSubmit = useCallback(
+    (content: string) => {
+      onCommentSubmit({ id, content });
+    },
+    [id]
+  );
 
   return (
     <S.Container>
@@ -62,7 +70,7 @@ const DetailFeed: FC<Props> = ({
               key={comment_id}
               content={content}
               name={name}
-              profile={profile_uri}
+              profile={getImgSrc(profile_uri)}
             />
           ))}
         </S.Comments>
