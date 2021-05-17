@@ -3,9 +3,22 @@ import DetailFeedAction, {
 } from "../../Action/detailFeed";
 import { ReportDetail } from "../../../lib/payloads/report";
 
-export type DetailFeedState = ReportDetail | null;
+export type DetailFeedState = ReportDetail;
 
-const initialState: DetailFeedState = null;
+const initialState: DetailFeedState = {
+  comments: [],
+  content: "",
+  created_at: "",
+  image_uris: [],
+  is_sympathy: false,
+  location: "",
+  num_of_sympathy: 0,
+  report_id: 0,
+  reporter_name: "",
+  reporter_profile_uri: "",
+  tags: [],
+  updated_at: "",
+};
 
 const detailFeedReducer = (
   state: DetailFeedState = initialState,
