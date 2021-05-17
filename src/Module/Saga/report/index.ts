@@ -13,7 +13,8 @@ function* getAllReportsSaga(action: ReturnType<typeof getAllReports>) {
   yield put(startLoading(action.type));
   try {
     const res: AxiosResponse<{ reports: ReportListItem[] }> = yield call(
-      reportApi.reqGetRepots
+      reportApi.reqGetRepots,
+      action.payload.option
     );
     yield put(getAllReportsSuccess(res.data.reports));
   } catch (err) {}
