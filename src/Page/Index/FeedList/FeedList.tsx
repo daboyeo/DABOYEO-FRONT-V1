@@ -1,16 +1,21 @@
-import React, { FC, MouseEvent, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { FC, MouseEvent, useCallback, useEffect, useMemo } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { FeedItem } from "../../../Component";
 import { ReportListItem } from "../../../lib/payloads/report";
 import { setOverImgView } from "../../../Module/Action/overViewImg";
 import { getAllReports } from "../../../Module/Action/report";
 import { Store } from "../../../Module/Reducer";
-import { getImgSrc } from "../../../lib/utils";
+import { getAfterTime, getImgSrc } from "../../../lib/utils";
 import { getDetailFeed } from "../../../Module/Action/detailFeed";
+
 const FeedList: FC = () => {
   const dispatch = useDispatch();
-  const reports: ReportListItem[] = useSelector(
-    (store: Store) => store.report.reports
+  const { reports, detailFeedId } = useSelector(
+    (store: Store) => ({
+      reports: store.report.reports,
+      detailFeedId: store.detailFeed.report_id,
+    }),
+    shallowEqual
   );
 
   useEffect(() => {
@@ -23,9 +28,13 @@ const FeedList: FC = () => {
     dispatch(setOverImgView(imgSrc));
   }, []);
 
-  const containerHandler = useCallback(async (id: number) => {
-    dispatch(getDetailFeed(id));
-  }, []);
+  const containerHandler = useCallback(
+    async (id: number) => {
+      if (id === detailFeedId) return;
+      dispatch(getDetailFeed(id));
+    },
+    [detailFeedId]
+  );
 
   return (
     <>
@@ -44,7 +53,7 @@ const FeedList: FC = () => {
             location={location}
             tags={tags}
             key={report_id}
-            date={created_at}
+            date={getAfterTime(created_at)}
             id={report_id}
             profileImgSrc={getImgSrc(reporter_profile_uri)}
             isAdminMode={false}
