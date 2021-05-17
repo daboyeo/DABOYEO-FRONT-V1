@@ -1,9 +1,19 @@
 import axios from "axios";
 import apiDefault, { ResServer } from "../../client";
-import { ReportDetail, ReportListItem, ReportReq } from "../../payloads/report";
+import {
+  CommentReq,
+  GetReportOption,
+  ReportDetail,
+  ReportListItem,
+  ReportReq,
+} from "../../payloads/report";
+import { makeQuery } from "../../utils";
 
-export const reqGetRepots = (): ResServer<{ reports: ReportListItem[] }> => {
-  return apiDefault().get<{ reports: ReportListItem[] }>(`/report`);
+export const reqGetRepots = (
+  option: GetReportOption
+): ResServer<{ reports: ReportListItem[] }> => {
+  const query: string = makeQuery(option);
+  return apiDefault().get<{ reports: ReportListItem[] }>(`/report?${query}`);
 };
 
 export const reqPostReport = (data: ReportReq): ResServer<{}> => {
@@ -24,4 +34,11 @@ export const reqUploadImage = (
 
 export const reqGetDetailFeed = (id: number): ResServer<ReportDetail> => {
   return apiDefault().get<ReportDetail>(`/report/${id}`);
+};
+
+export const reqPostComment = (payload: CommentReq): ResServer<{}> => {
+  return apiDefault().post<{}>("/report/comment", {
+    report_id: payload.id,
+    content: payload.content,
+  });
 };
