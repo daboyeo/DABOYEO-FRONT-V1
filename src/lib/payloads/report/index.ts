@@ -38,6 +38,16 @@ export interface Location {
   latitude: number;
   longitude: number;
 }
+export interface CommentReq {
+  id: number;
+  content: string;
+}
+
+export interface GetReportOption {
+  user?: string;
+  search?: string;
+  tag?: string;
+}
 
 export interface KakaoMapLocation extends Location {
   address: string;
