@@ -33,15 +33,21 @@ export const getAfterTime = (createdAt: string): string => {
   const nowDate: number = new Date().getTime();
   const thatDate: number = new Date(createdAt).getTime();
 
-  const minute: number = Math.round((nowDate - thatDate) / 60000);
+  const minute: number = Math.floor((nowDate - thatDate) / 60000);
 
   if (minute < 60) {
     return `${minute}분 전`;
   }
-  const hour: number = Math.round(minute / 60);
+  const hour: number = Math.floor(minute / 60);
 
   if (hour < 24) {
     return `${hour}시간 전`;
   }
   return `${Math.floor(hour / 24)}일 전`;
+};
+
+export const makeQuery = (obj: Object = {}): string => {
+  return Object.keys(obj).reduce((prev: string, key: string) => {
+    return `${prev}${key}=${obj[key]}&`;
+  }, "");
 };
