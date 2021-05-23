@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -66,6 +67,11 @@ export const WriterImg = styled.img`
 export const WriterName = styled.span`
   margin-left: 10px;
   flex: 1;
+
+  > a {
+    color: unset;
+    text-decoration: none;
+  }
 `;
 
 export const Date = styled.div`
@@ -100,4 +106,13 @@ export const Location = styled(Tag)`
 export const KakaoMap = styled.div`
   width: 100%;
   height: 300px;
+`;
+
+export const TagLink = styled(Link)`
+  display: inline;
+  text-decoration: none;
+
+  & + & {
+    margin-left: 3px;
+  }
 `;
