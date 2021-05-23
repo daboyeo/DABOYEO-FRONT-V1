@@ -5,15 +5,18 @@ import { HomeIcon, PersonIcon, SearchIcon } from "../../Asset";
 import * as authApi from "../../lib/apis/auth";
 import * as S from "./style";
 import * as profileApi from "../../lib/apis/profile";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProfile } from "../../Module/Action/profile/profile";
 import { delay } from "../../lib/utils";
 import useInput from "../../lib/hooks/useInput";
 import useEnter from "../../lib/hooks/useEnter";
+import { Store } from "../../Module/Reducer";
 
 const Header: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const myId = useSelector((store: Store) => store.profile.id);
+
   const [isSearchMode, setIsSearchMode] = useState<boolean>(false);
   const [keyword, setKeyword, changeKeyword] = useInput<HTMLInputElement>("");
   const [isLoginMode, setIsLoginMode] = useState<boolean>(false);
@@ -22,20 +25,23 @@ const Header: FC = () => {
     const userName: string = localStorage.getItem(authConstant.USER_NAME);
     const profileUri: string = localStorage.getItem(authConstant.PROFILE);
     const accessToken: string = localStorage.getItem(authConstant.ACCESS_TOKEN);
+    const id: string = localStorage.getItem(authConstant.USER_ID);
 
     setIsLoginMode(false);
     dispatch(
       setProfile({
         name: userName,
         profile_uri: profileUri,
+        id,
       })
     );
 
     if ((!userName || !profileUri) && accessToken) {
       profileApi.reqGetMyInfo().then((res) => {
-        const { name, profile_uri } = res.data;
+        const { name, profile_uri, id } = res.data;
         localStorage.setItem(authConstant.USER_NAME, name);
         localStorage.setItem(authConstant.PROFILE, profile_uri);
+        localStorage.setItem(authConstant.USER_ID, id);
 
         setIsLoginMode(true);
         dispatch(setProfile(res.data));
@@ -105,7 +111,7 @@ const Header: FC = () => {
         </S.IconWrap>
         <S.IconWrap>
           {isLoginMode ? (
-            <Link to="/profile">
+            <Link to={`/profile/${myId}`}>
               <S.Icon src={PersonIcon} />
             </Link>
           ) : (
