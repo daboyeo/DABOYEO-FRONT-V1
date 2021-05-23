@@ -15,9 +15,6 @@ const IndexPage: FC = ({}) => {
       <S.FeedWrap>
         <FeedList />
       </S.FeedWrap>
-      <S.DetailFeed>
-        <DetailFeedPage />
-      </S.DetailFeed>
     </S.Container>
   );
 };
