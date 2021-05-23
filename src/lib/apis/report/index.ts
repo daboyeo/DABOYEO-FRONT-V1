@@ -13,6 +13,7 @@ export const reqGetRepots = (
   option: GetReportOption
 ): ResServer<{ reports: ReportListItem[] }> => {
   const query: string = makeQuery(option);
+  console.log(option);
   return apiDefault().get<{ reports: ReportListItem[] }>(`/report?${query}`);
 };
 
