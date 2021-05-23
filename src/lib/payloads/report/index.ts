@@ -1,6 +1,7 @@
 export interface ReportListItem {
   report_id: number;
   reporter_name: string;
+  reporter_id: string;
   reporter_profile_uri: string;
   content: string;
   tags: string[];
@@ -45,7 +46,7 @@ export interface CommentReq {
 
 export interface GetReportOption {
   user?: string;
-  search?: string;
+  query?: string;
   tag?: string;
 }
 
