@@ -4,6 +4,7 @@ import { WriteModal } from "../../Component";
 import * as reportApi from "../../lib/apis/report";
 import { ReportManagement, ReportReq } from "../../lib/payloads/report";
 import { getImgSrc } from "../../lib/utils";
+import { getAllReports } from "../../Module/Action/report";
 import { setWriteModalOpen } from "../../Module/Action/writeModal";
 import { Store } from "../../Module/Reducer";
 
@@ -35,6 +36,7 @@ const WriteModalPage: FC = () => {
       });
       alert("신고를 완료했습니다");
       dispatch(setWriteModalOpen(false));
+      dispatch(getAllReports());
     } catch (err) {}
   }, []);
 
