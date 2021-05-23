@@ -1,6 +1,5 @@
 import React, { FC, useCallback } from "react";
 import { CommentItem, WriteFeed } from "..";
-import { reqPostComment } from "../../lib/apis/report";
 import { Comment, CommentReq } from "../../lib/payloads/report";
 import { getImgSrc } from "../../lib/utils";
 import * as S from "./style";

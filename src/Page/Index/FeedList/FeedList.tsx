@@ -1,12 +1,10 @@
 import React, { FC, MouseEvent, useCallback, useEffect, useMemo } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { FeedItem } from "../../../Component";
-import { ReportListItem } from "../../../lib/payloads/report";
-import { setOverImgView } from "../../../Module/Action/overViewImg";
 import { getAllReports } from "../../../Module/Action/report";
 import { Store } from "../../../Module/Reducer";
 import { getAfterTime, getImgSrc } from "../../../lib/utils";
-import { getDetailFeed } from "../../../Module/Action/detailFeed";
+import { useDetailFeedDispatch } from "../../../lib/hooks/useDetailFeed";
 
 const FeedList: FC = () => {
   const dispatch = useDispatch();
@@ -17,56 +15,44 @@ const FeedList: FC = () => {
     }),
     shallowEqual
   );
+  const { setDetailFeedId } = useDetailFeedDispatch(detailFeedId);
 
   useEffect(() => {
     dispatch(getAllReports());
   }, []);
 
-  const clickHandler = useCallback((e: MouseEvent<HTMLImageElement>) => {
-    e.preventDefault();
-    const imgSrc: string = e.currentTarget.src;
-    dispatch(setOverImgView(imgSrc));
-  }, []);
+  const render = useMemo(() => {
+    return reports.map(
+      ({
+        content,
+        reporter_name,
+        image_uris,
+        report_id,
+        reporter_profile_uri,
+        created_at,
+        tags,
+        location,
+        reporter_id,
+      }) => (
+        <FeedItem
+          location={location}
+          tags={tags}
+          reporterId={reporter_id}
+          key={report_id}
+          date={getAfterTime(created_at)}
+          id={report_id}
+          profileImgSrc={getImgSrc(reporter_profile_uri)}
+          isAdminMode={false}
+          userName={reporter_name}
+          content={content}
+          clickHandler={setDetailFeedId}
+          imgSrc={image_uris.map((uri: string) => getImgSrc(uri))}
+        />
+      )
+    );
+  }, [reports, setDetailFeedId]);
 
-  const containerHandler = useCallback(
-    async (id: number) => {
-      if (id === detailFeedId) return;
-      dispatch(getDetailFeed(id));
-    },
-    [detailFeedId]
-  );
-
-  return (
-    <>
-      {reports.map(
-        ({
-          content,
-          reporter_name,
-          image_uris,
-          report_id,
-          reporter_profile_uri,
-          created_at,
-          tags,
-          location,
-        }) => (
-          <FeedItem
-            location={location}
-            tags={tags}
-            key={report_id}
-            date={getAfterTime(created_at)}
-            id={report_id}
-            profileImgSrc={getImgSrc(reporter_profile_uri)}
-            isAdminMode={false}
-            userName={reporter_name}
-            content={content}
-            clickHandler={containerHandler}
-            imgClickHandler={clickHandler}
-            imgSrc={image_uris.map((uri: string) => getImgSrc(uri))}
-          />
-        )
-      )}
-    </>
-  );
+  return <>{render}</>;
 };
 
 export default FeedList;
