@@ -17,6 +17,7 @@ const initialState: DetailFeedState = {
   reporter_name: "",
   reporter_profile_uri: "",
   tags: [],
+  reporter_id: "",
   updated_at: "",
 };
 
