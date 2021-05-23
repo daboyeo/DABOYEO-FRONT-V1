@@ -30,20 +30,22 @@ const DetailFeedPage: FC = () => {
   }, []);
 
   return feedData.report_id && !loading ? (
-    <S.Container>
-      <DetailFeed
-        onCommentSubmit={commentSubmit}
-        id={feedData.report_id}
-        comments={feedData.comments}
-        tags={feedData.tags}
-        content={feedData.content}
-        imgs={feedData.image_uris.map((uri: string) => getImgSrc(uri))}
-        location={feedData.location}
-        profileImgSrc={getImgSrc(feedData.reporter_profile_uri)}
-        reporterName={feedData.reporter_name}
-        time={getAfterTime(feedData.created_at)}
-      />
-    </S.Container>
+    <S.ContainerWrap>
+      <S.Container>
+        <DetailFeed
+          onCommentSubmit={commentSubmit}
+          id={feedData.report_id}
+          comments={feedData.comments}
+          tags={feedData.tags}
+          content={feedData.content}
+          imgs={feedData.image_uris.map((uri: string) => getImgSrc(uri))}
+          location={feedData.location}
+          profileImgSrc={getImgSrc(feedData.reporter_profile_uri)}
+          reporterName={feedData.reporter_name}
+          time={getAfterTime(feedData.created_at)}
+        />
+        </S.Container>
+    </S.ContainerWrap>
   ) : (
     <></>
   );

@@ -12,6 +12,12 @@ export const slideUp = keyframes`
     }
 `;
 
+export const ContainerWrap = styled.div`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+`;
+
 export const Container = styled.div`
   width: 420px;
   animation: ${slideUp} 0.4s;
