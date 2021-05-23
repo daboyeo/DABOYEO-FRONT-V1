@@ -8,3 +8,7 @@ export const reqGetMyInfo = (): ResServer<UserProfileRes> => {
 export const editProfile = (data: UserProfileRes): ResServer<{}> => {
   return apiDefault().put<{}>("/user", data);
 };
+
+export const reqGetUserInfo = (id: string): ResServer<UserProfileRes> => {
+  return apiDefault().get<UserProfileRes>(`/user?id=${id}`);
+};
