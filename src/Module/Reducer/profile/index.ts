@@ -3,11 +3,13 @@ import ProfileAction, { SET_PROFILE } from "../../Action/profile/profile";
 export interface ProfileReducerState {
   profileUri: string;
   name: string;
+  id: string;
 }
 
 const initialState: ProfileReducerState = {
   name: "",
   profileUri: "",
+  id: "",
 };
 
 const profileReducer = (
@@ -19,6 +21,7 @@ const profileReducer = (
       return {
         name: action.payload.name,
         profileUri: action.payload.profile_uri,
+        id: action.payload.id,
       };
     }
     default: {
